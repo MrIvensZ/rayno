@@ -1,0 +1,69 @@
+# ==================== DJANGO SPECIFIC ====================
+# Логи Django
+*.log
+# Файлы переводов
+*.pot
+# Кэш Python
+*.pyc
+__pycache__/
+# Локальные настройки (никогда не коммитить!)
+local_settings.py
+.env
+.env.local
+# База данных SQLite
+db.sqlite3
+db.sqlite3-journal
+# Загруженные файлы
+media/
+uploads/
+staticfiles/
+
+# ==================== PYTHON ====================
+# Виртуальные окружения
+.venv
+venv/
+env/
+ENV/
+# Кэш pip
+.pip-cache/
+# Установленные пакеты
+*.egg-info/
+# Дистрибутивы
+dist/
+build/
+
+# ==================== IDE ====================
+# VS Code
+.vscode/
+# PyCharm
+.idea/
+*.iml
+# Временные файлы редакторов
+*.swp
+*.swo
+*~
+
+# ==================== OPERATING SYSTEM ====================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==================== TESTING ====================
+# Отчёты покрытия кода
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# ==================== OPTIONAL ====================
+*/migrations/*
+!*/migrations/__init__.py
+
+# Раскомментируйте для Docker:
+# docker-compose.yml
+# Dockerfile

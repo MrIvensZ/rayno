@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Movies{% endblock %}
+{% block content %}
+    {% if movies %}
+        <div>
+            {% for movie in movies %}
+                {% if movie.poster %}
+                    <p><img src="{{ movie.poster.url }}" width="300" height="400"></p>
+                {% else %}
+                    <p><img src="{% get_media_prefix %}default/poster_default.jpg" width="150" height="200"></p>
+                {% endif %}
+                {{ movie.title }}
+                {% if movie.avg_rating %}
+                    <b>{{movie.avg_rating}}</b>
+                {% endif %}
+                <p><a href="{% url 'movies:detail' movie.id %}">Подробнее</a></p>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No movies in list</p>
+    {% endif %}
+{% endblock %}

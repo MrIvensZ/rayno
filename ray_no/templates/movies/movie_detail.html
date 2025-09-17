@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Movie detail{% endblock %}
+{% block content %}
+    <h1>Movie rating</h1>
+    {% if movie %}
+        <h1>{{ movie.title }}</h1>
+        {% if movie.poster %}
+            <p><img src="{{ movie.poster.url }}" width="300" height="400"></p>
+        {% else %}
+            <p><img src="{% get_media_prefix %}default/poster_default.jpg" width="300" height="400"></p>
+        {% endif %}
+        <p>{{ movie.director }}</p>
+        <p>{{ movie.release_date }}</p>
+        {% for genre in movie.genre.all %}
+            {{ genre.genre }}
+        {% endfor %}
+        {% if movie.avg_rating %}
+            <h2>Total rating: {{movie.avg_rating}}</h2>
+        {% endif %}
+        {% if your_score is not None %}
+            <h2>Your rating: {{ your_score }}</h2>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Поставить оценку</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <p>This movie doesnt exist</p>
+    {% endif %}
+{% endblock %}
