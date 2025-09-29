@@ -14,7 +14,7 @@
                 {% if movie.avg_rating %}
                     <b>{{movie.avg_rating}}</b>
                 {% endif %}
-                <p><a href="{% url 'movies:detail' movie.id %}">Подробнее</a></p>
+                <p><a href="{% url 'movies:movie_detail' movie.id %}">Подробнее</a></p>
             {% endfor %}
         </div>
     {% else %}

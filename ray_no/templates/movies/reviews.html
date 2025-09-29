@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Movies{% endblock %}
+{% block content %}
+    {% if reviews %}
+        <h3>обзоры на фильм {{ movie.title }}</h3>
+        {% for review in reviews %}
+            <div>
+                <p>{{ review.user }}</p>
+                <p>{{ review.text|truncatechars:50}}</p>
+                <p><a href="{% url 'movies:review_detail' movie.id review.id %}">Подробнее</a></p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>У фильма {{ movie.title }} пока нет отзывов</p>
+        <p><a href="{% url 'movies:add_review' movie.id %}">Добавить</a></p>
+    {% endif %}
+{% endblock %}

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Rating, Movies
+from .models import Rating, Movies, Reviews, Comments
 
 
 class RatingForm(forms.ModelForm):
@@ -30,3 +30,15 @@ class MovieForm(forms.ModelForm):
                 'type': 'date'
             }),
         }
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Reviews
+        fields = ['text',]
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['text',]

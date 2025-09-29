@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Review detail{% endblock %}
+{% block content %}
+    <h1>Обзор пользователя {{ review.user }} на фильм {{ review.movie }}</h1>
+    <div>
+        <p>{{ review.text }}</p>
+        <p>Создано: {{ review.time_create }}</p>
+    </div>
+    <h4>Комментарии:</h4>
+    <p>Написать комментарий:</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Добавить комментарий</button>
+    </form>
+    {% for comment in comments %}
+        <div>
+            <p>{{ comment.user }}</p>
+            <p>{{ comment.text }}</p>
+            <p>{{ comment.time_create }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}

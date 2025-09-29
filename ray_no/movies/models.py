@@ -4,11 +4,13 @@ from django.db.models.fields.generated import GeneratedField
 from django.db.models.functions import Concat, Coalesce
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.urls import reverse
 
 User = get_user_model()
 
 
 class MovieQuerySet(models.QuerySet):
+    """Изменение мэнеджера для получения рейтингов и количества оценок"""
 
     def with_ratings(self):
         return self.annotate(
@@ -19,6 +21,8 @@ class MovieQuerySet(models.QuerySet):
 
 
 class Genres(models.Model):
+    """Модель жанров"""
+
     genre = models.CharField(max_length=128,
                              verbose_name='Жанр')
 
@@ -31,6 +35,8 @@ class Genres(models.Model):
 
 
 class Directors(models.Model):
+    """Модель режиссёров"""
+
     first_name = models.CharField(max_length=128,
                                   verbose_name='Имя режиссёра')
     last_name = models.CharField(max_length=128,
@@ -52,6 +58,8 @@ class Directors(models.Model):
 
 
 class Movies(models.Model):
+    """Модель фильмов"""
+
     title = models.CharField(max_length=100,
                              verbose_name='Название фильма',
                              help_text='Введите название фильма')
@@ -80,15 +88,13 @@ class Movies(models.Model):
     def __str__(self):
         return self.title
 
-    # def average_rating(self):
-    #     ratings = self.ratings.all()
-    #     if ratings.count() > 0:
-    #         return round(ratings.aggregate(
-    #             models.Avg('rate'))['rate__avg'], 1)
-    #     return 0
+    def get_absolute_url(self):
+        return reverse('movies:movie_detail', kwargs={'movie_id': self.pk})
 
 
 class Rating(models.Model):
+    """Модель рейтингов фильмов"""
+
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='ratings',
@@ -109,3 +115,53 @@ class Rating(models.Model):
         verbose_name = 'Оценка пользователя'
         verbose_name_plural = 'Оценки пользователя'
         unique_together = ['user', 'movie']
+
+
+class Reviews(models.Model):
+    """Модель обзоров фильмов"""
+
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='reviews',
+                             verbose_name='Пользователь')
+    text = models.TextField(max_length=1000,
+                            verbose_name='Текст обзора')
+    movie = models.ForeignKey(Movies,
+                              on_delete=models.CASCADE,
+                              related_name='reviews',
+                              verbose_name='Фильм')
+    time_create = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Обзор пользователя {self.user} на фильм {self.movie}.'
+
+    class Meta:
+        verbose_name = 'Обзор пользователя'
+        verbose_name_plural = 'Обзоры пользователя'
+        unique_together = ['user', 'movie']
+
+    def get_absolute_url(self):
+        return reverse('movies:review_detail', kwargs={
+            'review_id': self.pk,
+            'movie_id': self.movie.pk})
+
+
+class Comments(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='comments',
+                             verbose_name='Пользователь')
+    text = models.TextField(max_length=500,
+                            verbose_name='Текст комментария')
+    review = models.ForeignKey(Reviews,
+                               on_delete=models.CASCADE,
+                               related_name='comments',
+                               verbose_name='Обзор')
+    time_create = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Коментарий {self.id}'
+
+    class Meta:
+        verbose_name = 'Комментарий пользователя'
+        verbose_name_plural = 'Комментарии пользователя'

@@ -10,22 +10,28 @@
         {% else %}
             <p><img src="{% get_media_prefix %}default/poster_default.jpg" width="300" height="400"></p>
         {% endif %}
-        <p>{{ movie.director }}</p>
-        <p>{{ movie.release_date }}</p>
+        <p>Режиссёр: {{ movie.director }}</p>
+        <p>Дата выхода: {{ movie.release_date }}</p>
         {% for genre in movie.genre.all %}
-            {{ genre.genre }}
+            <p>{{ genre.genre }}</p>
         {% endfor %}
         {% if movie.avg_rating %}
-            <h2>Total rating: {{movie.avg_rating}}</h2>
+            <h2>Общая оценка: {{movie.avg_rating}}</h2>
         {% endif %}
         {% if your_score is not None %}
-            <h2>Your rating: {{ your_score }}</h2>
+            <h2>ваша оценка: {{ your_score }}</h2>
         {% else %}
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit">Поставить оценку</button>
             </form>
+        {% endif %}
+        {% if movie.reviews.all %}
+            <p><a href="{% url 'movies:reviews_list' movie.id %}">Обзоры</a></p>
+        {% else %}
+            <p>Обзоров нет</p>
+            <p><a href="{% url 'movies:add_review' movie.id %}">Добавить</a></p>
         {% endif %}
     {% else %}
         <p>This movie doesnt exist</p>
