@@ -3,7 +3,7 @@
 {% block title %}Movies{% endblock %}
 {% block content %}
     {% if movies %}
-        <div>
+        <div class="movie-card">
             {% for movie in movies %}
                 {% if movie.poster %}
                     <p><img src="{{ movie.poster.url }}" width="300" height="400"></p>

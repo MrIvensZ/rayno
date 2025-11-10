@@ -17,11 +17,17 @@ body {
 }
 
 .panel {
-    border: solid 2px;
+    border: solid 0.5px purple;
 }
 
 .button-header {
     display: inline-block;
-    margin: auto;
-    border: 2px solid black;
+    margin: 3px;
+    border: 0.1px solid rgb(228, 105, 255);
+}
+
+.movie-card {
+    display: inline-block;
+    border: 0.2px solid red;
+    margin: 3px;
 }
