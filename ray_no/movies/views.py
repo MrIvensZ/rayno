@@ -11,7 +11,7 @@ def movie_create(request):
         if form.is_valid():
             movie = form.save()
             messages.success(request, f'Фильм "{movie.title}" добавлен!')
-            return redirect('movies:detail', movie_id=movie.id)
+            return redirect('movies:movie_detail', movie_id=movie.id)
     else:
         form = MovieForm()
     template = 'movies/movie_create.html'
@@ -32,10 +32,14 @@ def movie_detail(request, movie_id):
                               .prefetch_related('genre'),
                               id=movie_id)
     your_score = None
-    try:
-        your_score = Rating.objects.get(user=request.user, movie=movie).rate
-    except Rating.DoesNotExist:
-        pass
+    if request.user.is_authenticated:
+        try:
+            your_score = Rating.objects.get(
+                user=request.user,
+                movie=movie
+                ).rate
+        except Rating.DoesNotExist:
+            pass
     if request.method == 'POST':
         form = RatingForm(request.POST)
         if form.is_valid():

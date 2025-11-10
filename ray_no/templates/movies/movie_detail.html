@@ -21,11 +21,15 @@
         {% if your_score is not None %}
             <h2>ваша оценка: {{ your_score }}</h2>
         {% else %}
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Поставить оценку</button>
-            </form>
+            {% if user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Поставить оценку</button>
+                </form>
+            {% else %}
+                <p>Вы не авторизованы. <a href="{% url 'users:login' %}">Войдите</a></p>
+            {% endif %}
         {% endif %}
         {% if movie.reviews.all %}
             <p><a href="{% url 'movies:reviews_list' movie.id %}">Обзоры</a></p>
