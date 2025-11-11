@@ -3,7 +3,7 @@
 {% block title %}Movies{% endblock %}
 {% block content %}
     {% if reviews %}
-        <h3>обзоры на фильм {{ movie.title }}</h3>
+        <h2>Обзоры на фильм {{ movie.title }}</h2>
         {% for review in reviews %}
             <div>
                 <p>{{ review.user }}</p>

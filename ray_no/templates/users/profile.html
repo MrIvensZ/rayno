@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}Profile{% endblock %}
 {% block content %}
-    <H3 align="center">Профиль пользователя {{ user.username}}</H3>
+    <h2 align="center">Профиль пользователя {{ user.username}}</h2>
     <a align="center" href="{% url 'users:edit'  %}">Редактировать</a>
     <div align="left" border_color="balck">
         {% if user.avatar %}

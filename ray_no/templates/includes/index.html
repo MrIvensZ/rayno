@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Index{% endblock %}
 {% block content %}
-    <h3>Список доступных страниц:</h3>
-    <ol>
-        <li><a href="{% url 'movies:movie_list' %}">Список фильмов</a></li>
-        <li><a href="{% url 'movies:create' %}">Добавить фильм</a></li>
-    </ol>
+    <div class="link-list"></div>
+        <h2>Навигация</h2>
+        <p>
+            <a href="{% url 'movies:movie_list' %}">Список фильмов</a></li>
+        </p>
+        <p>
+            <a href="{% url 'movies:create' %}">Добавить фильм</a></li>
+        </p>
+    </div>
 {% endblock %}

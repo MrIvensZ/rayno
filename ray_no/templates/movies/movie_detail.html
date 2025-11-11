@@ -2,9 +2,9 @@
 {% load static %}
 {% block title %}Movie detail{% endblock %}
 {% block content %}
-    <h1>Movie rating</h1>
+    <h2>Movie rating</h2>
     {% if movie %}
-        <h1>{{ movie.title }}</h1>
+        <h2>{{ movie.title }}</h2>
         {% if movie.poster %}
             <p><img src="{{ movie.poster.url }}" width="300" height="400"></p>
         {% else %}

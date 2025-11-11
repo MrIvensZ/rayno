@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Movie create{% endblock %}
 {% block content %}
-    <h1>Добавьте новый фильм</h1>
+    <h2>Добавьте новый фильм</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}

@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}Review detail{% endblock %}
 {% block content %}
-    <h1>Обзор пользователя {{ review.user }} на фильм {{ review.movie }}</h1>
+    <h2>Обзор пользователя {{ review.user }} на фильм {{ review.movie }}</h2>
     <div>
         <p>{{ review.text }}</p>
         <p>Создано: {{ review.time_create }}</p>
