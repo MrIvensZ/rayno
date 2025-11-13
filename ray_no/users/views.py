@@ -1,8 +1,9 @@
-from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+from django.shortcuts import redirect, render
+from django.urls import reverse, reverse_lazy
+from django.views.generic import FormView, UpdateView
 
 from .forms import EditProfileForm, RegistrationForm, LoginForm
 

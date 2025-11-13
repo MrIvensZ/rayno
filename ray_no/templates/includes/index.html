@@ -1,13 +1,33 @@
 {% extends "base.html" %}
 {% block title %}Index{% endblock %}
 {% block content %}
-    <div class="link-list"></div>
-        <h2>Навигация</h2>
-        <p>
-            <a href="{% url 'movies:movie_list' %}">Список фильмов</a></li>
-        </p>
-        <p>
-            <a href="{% url 'movies:create' %}">Добавить фильм</a></li>
-        </p>
+    <div class="index-container">
+        <div class="link-list">
+            <h2>Навигация</h2>
+            <p>
+                <a href="{% url 'movies:movie_list' %}">Список фильмов</a>
+            </p>
+            <p>
+                <a href="{% url 'movies:create' %}">Добавить фильм</a>
+            </p>
+        </div>
+        <div class="top-movie">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Рейтинг</th>
+                        <th>Количество оценок</th>
+                    </tr>
+                </thead>
+                {% for movie in movies %}
+                <tr>
+                    <th>{{ movie.title }}</th>
+                    <th>{{ movie.avg_rating }}</th>
+                    <th>{{ movie.rating_count }}</th>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 {% endblock %}

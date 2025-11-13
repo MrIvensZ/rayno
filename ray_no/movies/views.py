@@ -1,29 +1,60 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
+from django.urls import reverse_lazy
+from django.views.generic import FormView, ListView, CreateView
 
 from .models import Movies, Rating, Reviews, Comments
 from .forms import RatingForm, MovieForm, ReviewForm, CommentForm
 
 
-def movie_create(request):
-    if request.method == 'POST':
-        form = MovieForm(request.POST, request.FILES)
-        if form.is_valid():
-            movie = form.save()
-            messages.success(request, f'Фильм "{movie.title}" добавлен!')
-            return redirect('movies:movie_detail', movie_id=movie.id)
-    else:
-        form = MovieForm()
-    template = 'movies/movie_create.html'
-    context = {'form': form}
-    return render(request, template, context)
+# def movie_create(request):
+#     if request.method == 'POST':
+#         form = MovieForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             movie = form.save()
+#             messages.success(request, f'Фильм "{movie.title}" добавлен!')
+#             return redirect('movies:movie_detail', movie_id=movie.id)
+#     else:
+#         form = MovieForm()
+#     template = 'movies/movie_create.html'
+#     context = {'form': form}
+#     return render(request, template, context)
+
+# class MovieCreateFormView(FormView):
+#     form_class = MovieForm  # какую форму нужно использовать
+#     template_name = 'movies/movie_create.html'
+
+#     def form_valid(self, form):
+#         # без этого метода данные не сохранятся в БД
+#         self.object = form.save()
+#         return super().form_valid(form)
+
+#     def get_success_url(self):
+#         # редактируем перенаправление
+#         return reverse_lazy('movies:movie_detail',
+#                             kwargs={'movie_id': self.object.id})
 
 
-def movie_list(request):
-    movies = Movies.objects.with_ratings()
-    template = 'movies/movies.html'
-    context = {'movies': movies}
-    return render(request, template, context)
+class MovieCreateView(CreateView):
+    model = Movies
+    form_class = MovieForm
+    template_name = 'movies/movie_create.html'
+
+
+# def movie_list(request):
+#     movies = Movies.objects.with_ratings()
+#     template = 'movies/movies.html'
+#     context = {'movies': movies}
+#     return render(request, template, context)
+
+class MovieListView(ListView):
+    context_object_name = 'movies'  # имя объекта в шаблоне
+    template_name = 'movies/movies.html'
+
+    def get_queryset(self):
+        # поскольку у нас непростое получение объектов модели,
+        # нужно отредактировать получение кварисета
+        return Movies.objects.with_ratings()
 
 
 def movie_detail(request, movie_id):
