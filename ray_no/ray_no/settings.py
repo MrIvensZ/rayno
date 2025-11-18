@@ -82,21 +82,24 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# константы юзера и логина
+"""Константы юзера и логина"""
 AUTH_USER_MODEL = 'users.CustomUser'
 
-LOGIN_REDIRECT_URL = '/'
+# куда пользователь будет перенаправлен после авторизации
+LOGIN_REDIRECT_URL = 'index'
 
-LOGOUT_REDIRECT_URL = '/'
+# куда пользователь будет перенаправлен после выхода из системы
+LOGOUT_REDIRECT_URL = 'index'
 
-LOGIN_URL = '/users/login'
+# куда система перенаправит неавторизованного пользователя
+LOGIN_URL = 'users:login'
 
-# константы медиа
+"""Константы медиа"""
 MEDIA_ROOT = BASE_DIR / 'media'
 
 MEDIA_URL = '/media/'
 
-# константы статики
+"""Константы статики"""
 STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'

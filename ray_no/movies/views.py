@@ -1,38 +1,8 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from django.contrib import messages
-from django.urls import reverse_lazy
-from django.views.generic import FormView, ListView, CreateView
+from django.views.generic import ListView, CreateView
 
 from .models import Movies, Rating, Reviews, Comments
 from .forms import RatingForm, MovieForm, ReviewForm, CommentForm
-
-
-# def movie_create(request):
-#     if request.method == 'POST':
-#         form = MovieForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             movie = form.save()
-#             messages.success(request, f'Фильм "{movie.title}" добавлен!')
-#             return redirect('movies:movie_detail', movie_id=movie.id)
-#     else:
-#         form = MovieForm()
-#     template = 'movies/movie_create.html'
-#     context = {'form': form}
-#     return render(request, template, context)
-
-# class MovieCreateFormView(FormView):
-#     form_class = MovieForm  # какую форму нужно использовать
-#     template_name = 'movies/movie_create.html'
-
-#     def form_valid(self, form):
-#         # без этого метода данные не сохранятся в БД
-#         self.object = form.save()
-#         return super().form_valid(form)
-
-#     def get_success_url(self):
-#         # редактируем перенаправление
-#         return reverse_lazy('movies:movie_detail',
-#                             kwargs={'movie_id': self.object.id})
 
 
 class MovieCreateView(CreateView):
@@ -41,15 +11,11 @@ class MovieCreateView(CreateView):
     template_name = 'movies/movie_create.html'
 
 
-# def movie_list(request):
-#     movies = Movies.objects.with_ratings()
-#     template = 'movies/movies.html'
-#     context = {'movies': movies}
-#     return render(request, template, context)
-
 class MovieListView(ListView):
     context_object_name = 'movies'  # имя объекта в шаблоне
     template_name = 'movies/movies.html'
+    ordering = 'title'
+    paginate_by = 10
 
     def get_queryset(self):
         # поскольку у нас непростое получение объектов модели,
@@ -74,15 +40,11 @@ def movie_detail(request, movie_id):
     if request.method == 'POST':
         form = RatingForm(request.POST)
         if form.is_valid():
-            rating, created = Rating.objects.update_or_create(
+            Rating.objects.update_or_create(
                 user=request.user,
                 movie=movie,
                 defaults={'rate': form.cleaned_data['rate']}
             )
-            if created:
-                messages.success(request, 'Оценка добавлена!')
-            else:
-                messages.success(request, 'Оценка обновлена!')
     else:
         form = RatingForm()
     template = 'movies/movie_detail.html'
@@ -103,7 +65,6 @@ def review_add(request, movie_id):
                 movie=movie
             )
             if review:
-                messages.success(request, 'Обзор добавлен!')
                 return redirect(review.get_absolute_url())
     else:
         form = ReviewForm()
@@ -132,7 +93,6 @@ def review_detail(request, movie_id, review_id):
                 review=review
             )
             if comment:
-                messages.success(request, 'Комментарий добавлен!')
                 return redirect(review)
     else:
         form = ReviewForm()
