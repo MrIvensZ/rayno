@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import ListView, CreateView
 
@@ -5,7 +6,7 @@ from .models import Movies, Rating, Reviews, Comments
 from .forms import RatingForm, MovieForm, ReviewForm, CommentForm
 
 
-class MovieCreateView(CreateView):
+class MovieCreateView(LoginRequiredMixin, CreateView):
     model = Movies
     form_class = MovieForm
     template_name = 'movies/movie_create.html'

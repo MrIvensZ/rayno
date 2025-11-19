@@ -1,4 +1,8 @@
-from django.contrib.auth import get_user_model, authenticate, login, logout, views 
+from django.contrib.auth import (get_user_model,
+                                 authenticate,
+                                 login,
+                                 logout,
+                                 views)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
@@ -15,7 +19,9 @@ def registration_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
             login(request, user)
             return redirect('index')
     else:

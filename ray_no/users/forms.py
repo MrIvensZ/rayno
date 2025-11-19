@@ -1,16 +1,24 @@
 from django import forms
-from django.contrib.auth import authenticate
-from .models import CustomUser
+from django.contrib.auth import authenticate, get_user_model
 
 
 class RegistrationForm(forms.ModelForm):
 
+    password2 = forms.CharField(
+        label='Повтор пароля',
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Enter password'
+        })
+    )
+
     class Meta:
-        model = CustomUser
+        model = get_user_model()
+        labels = {'password2': 'Введите пароль повторно'}
         fields = ['first_name',
                   'last_name',
                   'username',
                   'password',
+                  'password2',
                   'about_user',
                   'sex',
                   'email',
@@ -20,6 +28,12 @@ class RegistrationForm(forms.ModelForm):
             'password': forms.PasswordInput(attrs={
                 'placeholder': 'Enter password'}),
         }
+
+    def clean_password2(self):
+        cleaned_data = self.cleaned_data
+        if cleaned_data['password2'] != cleaned_data['password']:
+            raise forms.ValidationError('пароли не совпадают!')
+        return cleaned_data['password']
 
 
 class LoginForm(forms.Form):
@@ -54,7 +68,7 @@ class LoginForm(forms.Form):
 class EditProfileForm(forms.ModelForm):
 
     class Meta:
-        model = CustomUser
+        model = get_user_model()
         fields = ['first_name',
                   'last_name',
                   'username',

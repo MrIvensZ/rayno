@@ -35,9 +35,11 @@
             <p><a href="{% url 'movies:reviews_list' movie.id %}">Обзоры</a></p>
         {% else %}
             <p>Обзоров нет</p>
-            <p><a href="{% url 'movies:add_review' movie.id %}">Добавить</a></p>
+            {% if user.is_authenticated %}
+                <p><a href="{% url 'movies:add_review' movie.id %}">Добавить</a></p>
+            {% endif %}
         {% endif %}
     {% else %}
-        <p>This movie doesnt exist</p>
+        <p>This movie doesn't exist</p>
     {% endif %}
 {% endblock %}
