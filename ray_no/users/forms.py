@@ -1,39 +1,47 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
 
-class RegistrationForm(forms.ModelForm):
+class RegistrationForm(UserCreationForm):
+
+    username = forms.CharField(
+        label='Имя пользователя',
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Введите имя пользователя'}))
+
+    password1 = forms.CharField(
+        label='Пароль',
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Введите пароль'}))
 
     password2 = forms.CharField(
         label='Повтор пароля',
         widget=forms.PasswordInput(attrs={
-            'placeholder': 'Enter password'
-        })
-    )
+            'placeholder': 'Повторите пароль'}))
 
     class Meta:
         model = get_user_model()
-        labels = {'password2': 'Введите пароль повторно'}
         fields = ['first_name',
                   'last_name',
+                  'email',
                   'username',
-                  'password',
+                  'password1',
                   'password2',
                   'about_user',
                   'sex',
-                  'email',
                   'avatar',
                   ]
         widgets = {
-            'password': forms.PasswordInput(attrs={
-                'placeholder': 'Enter password'}),
-        }
-
-    def clean_password2(self):
-        cleaned_data = self.cleaned_data
-        if cleaned_data['password2'] != cleaned_data['password']:
-            raise forms.ValidationError('пароли не совпадают!')
-        return cleaned_data['password']
+            'first_name': forms.TextInput(attrs={
+                'placeholder': 'Введите имя'}),
+            'last_name': forms.TextInput(attrs={
+                'placeholder': 'Введите вашу фамилию'}),
+            'email': forms.EmailInput(attrs={
+                'placeholder': 'example@mail.com'}),
+            'about_user': forms.Textarea(attrs={
+                'placeholder': 'Расскажите о себе'})
+            }
 
 
 class LoginForm(forms.Form):
@@ -67,12 +75,24 @@ class LoginForm(forms.Form):
 
 class EditProfileForm(forms.ModelForm):
 
+    username = forms.CharField(
+        disabled=True,
+        label='Имя пользователя',
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Введите имя пользователя'}))
+
     class Meta:
         model = get_user_model()
-        fields = ['first_name',
-                  'last_name',
-                  'username',
-                  'about_user',
-                  'email',
-                  'avatar',
-                  ]
+        fields = ['username', 'email',
+                  'first_name', 'last_name',
+                  'about_user', 'avatar',]
+        widgets = {
+            'email': forms.EmailInput(attrs={
+                'placeholder': 'example@mail.com'}),
+            'first_name': forms.TextInput(attrs={
+                'placeholder': 'Введите имя'}),
+            'last_name': forms.TextInput(attrs={
+                'placeholder': 'Введите вашу фамилию'}),
+            'about_user': forms.Textarea(attrs={
+                'placeholder': 'Расскажите о себе'})
+            }
