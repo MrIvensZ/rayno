@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
-from .forms import EditProfileForm, RegistrationForm
+from .forms import EditProfileForm, RegistrationForm, PasswordChangeForm
 
 
 user = get_user_model()
@@ -51,3 +51,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('users:profile')
+
+
+class UserPasswordChangeView(views.PasswordChangeView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('users:password_change_done')
+    template_name = 'users/password_change.html'
