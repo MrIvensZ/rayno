@@ -8,7 +8,7 @@
         {% if user.avatar %}
             <p><img src="{{ user.avatar.url }}" width="300" height="400"></p>
         {% else %}
-            <p><img src="{% get_media_prefix %}default/avatar_default.jpg" width="300" height="400"></p>
+            <p><img src="{{ default_avatar }}" width="300" height="400"></p>
         {% endif %}
         <p>Имя: {{ user.first_name }}</p>
         <p>Фамилия: {{ user.last_name }}</p>

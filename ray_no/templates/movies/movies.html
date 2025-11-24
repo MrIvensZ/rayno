@@ -9,7 +9,7 @@
                     {% if movie.poster %}
                         <p><img src="{{ movie.poster.url }}" width="300" height="400"></p>
                     {% else %}
-                        <p><img src="{% get_media_prefix %}default/poster_default.jpg" width="150" height="200"></p>
+                        <p><img src="{{ default_poster }}" width="150" height="200"></p>
                     {% endif %}
                     {{ movie.title }}
                     {% if movie.avg_rating %}

@@ -4,6 +4,7 @@ from django.views.generic import ListView, CreateView
 
 from .models import Movies, Rating, Reviews, Comments
 from .forms import RatingForm, MovieForm, ReviewForm, CommentForm
+from ray_no.settings import DEFAULT_MOVIE_IMAGE
 
 
 class MovieCreateView(LoginRequiredMixin, CreateView):
@@ -17,6 +18,7 @@ class MovieListView(ListView):
     template_name = 'movies/movies.html'
     ordering = 'title'
     paginate_by = 10
+    extra_context = {'default_poster': DEFAULT_MOVIE_IMAGE}
 
     def get_queryset(self):
         # поскольку у нас непростое получение объектов модели,
@@ -51,7 +53,8 @@ def movie_detail(request, movie_id):
     template = 'movies/movie_detail.html'
     context = {'movie': movie,
                'form': form,
-               'your_score': your_score}
+               'your_score': your_score,
+               'default_poster': DEFAULT_MOVIE_IMAGE}
     return render(request, template, context)
 
 

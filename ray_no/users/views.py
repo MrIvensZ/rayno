@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
 from .forms import EditProfileForm, RegistrationForm, PasswordChangeForm
+from ray_no.settings import DEFAULT_USER_IMAGE
 
 
 user = get_user_model()
@@ -36,7 +37,7 @@ def logout_view(request):
 @login_required
 def profile(request):
     user = request.user
-    context = {'user': user}
+    context = {'user': user, 'default_avatar': DEFAULT_USER_IMAGE}
     template = 'users/profile.html'
     return render(request, template, context)
 

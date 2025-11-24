@@ -99,6 +99,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 MEDIA_URL = '/media/'
 
+# путь до аватара по умолчанию
+DEFAULT_USER_IMAGE = MEDIA_URL + 'users/default_avatar.png'
+
+# путь до постера по умолчанию
+DEFAULT_MOVIE_IMAGE = MEDIA_URL + 'movies/default_poster.png'
+
 """Константы статики"""
 STATIC_URL = 'static/'
 

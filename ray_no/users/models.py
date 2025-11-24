@@ -2,7 +2,11 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-CHOICES = [('1', 'Male'), ('2', 'Female')]
+CHOICES = [('1', 'Мужчина'), ('2', 'Женщина')]
+
+
+def user_avatar_path(instance, filename):
+    return f'users/{instance.username}/{filename}'
 
 
 class CustomUser(AbstractUser):
@@ -13,7 +17,7 @@ class CustomUser(AbstractUser):
                            null=True,
                            verbose_name='Пол')
 
-    avatar = models.ImageField(upload_to='user_avatars',
+    avatar = models.ImageField(upload_to=user_avatar_path,
                                blank=True,
                                null=True,
                                verbose_name='Аватар пользователя')

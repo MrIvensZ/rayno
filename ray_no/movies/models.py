@@ -74,7 +74,7 @@ class Movies(models.Model):
                                    related_name='movies',
                                    verbose_name='Жанры')
 
-    poster = models.ImageField(upload_to='movie_posters',
+    poster = models.ImageField(upload_to=f'movies/posters/{title}',
                                blank=True,
                                null=True,
                                verbose_name='Постер фильма')
