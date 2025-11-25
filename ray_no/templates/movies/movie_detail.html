@@ -27,8 +27,6 @@
                     {{ form.as_p }}
                     <button type="submit">Поставить оценку</button>
                 </form>
-            {% else %}
-                <p>Вы не авторизованы. <a href="{% url 'users:login' %}">Войдите</a></p>
             {% endif %}
         {% endif %}
         {% if movie.reviews.all %}

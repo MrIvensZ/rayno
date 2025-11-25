@@ -8,12 +8,14 @@
         <p>Создано: {{ review.time_create }}</p>
     </div>
     <h4>Комментарии:</h4>
-    <p>Написать комментарий:</p>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit">Добавить комментарий</button>
-    </form>
+    {% if user.is_authenticated %}
+        <p>Написать комментарий:</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Добавить комментарий</button>
+        </form>
+    {% endif %}
     {% for comment in comments %}
         <div>
             <p>{{ comment.user }}</p>
