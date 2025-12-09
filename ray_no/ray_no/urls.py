@@ -11,6 +11,7 @@ urlpatterns = [
     path('', views.TopMoviesListView.as_view(), name='index'),
     path('movies/', include('movies.urls')),
     path('users/', include('users.urls')),
+    path('api/v1/', include('api.urls'))
     ]
 
 if settings.DEBUG:
