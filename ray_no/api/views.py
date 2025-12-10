@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from movies.models import Genres, Directors, Movies, Reviews, Comments
 
 from .mixins import StandartMixin
+from .pagination import MovieAPIPagination
 from .permissions import IsAuthorAuthenticatedOrReadOnly
 from .serializers import (GenreSerializer,
                           DirectorSerializer,
@@ -26,6 +27,7 @@ class DirectorsViewset(StandartMixin):
 class MoviesViewset(viewsets.ModelViewSet):
     queryset = Movies.objects.all()
     serializer_class = MoviesSerializer
+    pagination_class = MovieAPIPagination
 
 
 class ReviewsViewset(viewsets.ModelViewSet):
