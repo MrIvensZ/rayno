@@ -109,6 +109,13 @@ body {
     padding: 8px 12px;
     text-decoration: none;
     color: #0011ff;
+    transition: 0.3s ease-in-out;
+}
+
+.link-list a:hover {
+    background-color: #f2f5ff;
+    border-radius: 8px;
+    transform: translateY(5px);
 }
 
 .index-container {
