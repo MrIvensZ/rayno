@@ -16,14 +16,13 @@ class MovieCreateView(LoginRequiredMixin, CreateView):
 class MovieListView(ListView):
     context_object_name = 'movies'  # имя объекта в шаблоне
     template_name = 'movies/movies.html'
-    ordering = 'title'
     paginate_by = 10
     extra_context = {'default_poster': DEFAULT_MOVIE_IMAGE}
 
     def get_queryset(self):
         # поскольку у нас непростое получение объектов модели,
         # нужно отредактировать получение кварисета
-        return Movies.objects.with_ratings()
+        return Movies.objects.with_ratings().order_by('title')
 
 
 def movie_detail(request, movie_id):
