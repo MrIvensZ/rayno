@@ -34,3 +34,13 @@ def review(admin_user, movie):
     return Reviews.objects.create(user=admin_user,
                                   text='review_text',
                                   movie=movie)
+
+
+@pytest.fixture
+def pk_for_movie(movie):
+    return {'movie_id': movie.pk}
+
+
+@pytest.fixture
+def pk_for_movie_and_review(movie, review):
+    return {'movie_id': movie.pk, 'review_id': review.pk}

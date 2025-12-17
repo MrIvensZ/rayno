@@ -1,5 +1,7 @@
 import pytest
 
+from pytest_lazy_fixtures import lf
+
 from http import HTTPStatus
 
 from django.urls import reverse
@@ -8,11 +10,13 @@ from django.urls import reverse
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     'name, kwargs',
-    [('index', {}),
-     ('users:registration', {}),
-     ('users:login', {}),
-     ('movies:movie_list', {}),]
-)
+    [('index', None),
+     ('users:registration', None),
+     ('users:login', None),
+     ('movies:movie_list', None),
+     ('movies:movie_detail', lf('pk_for_movie')),
+     ('movies:reviews_list', lf('pk_for_movie')),
+     ('movies:review_detail', lf('pk_for_movie_and_review'))])
 def test_pages_for_anonymous_user(client, name, kwargs):
     url = reverse(name, kwargs=kwargs)
     response = client.get(url)
