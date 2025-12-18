@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import ListView, CreateView
@@ -57,6 +58,7 @@ def movie_detail(request, movie_id):
     return render(request, template, context)
 
 
+@login_required
 def review_add(request, movie_id):
     movie = get_object_or_404(Movies, pk=movie_id)
     if request.method == 'POST':
@@ -86,7 +88,7 @@ def review_list(request, movie_id):
 
 def review_detail(request, movie_id, review_id):
     review = get_object_or_404(Reviews, pk=review_id)
-    comments = review.comments.all()
+    comments = review.comments.all().order_by('-time_create')
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -98,7 +100,7 @@ def review_detail(request, movie_id, review_id):
             if comment:
                 return redirect(review)
     else:
-        form = ReviewForm()
+        form = CommentForm()
     context = {'review': review,
                'comments': comments,
                'form': form}
