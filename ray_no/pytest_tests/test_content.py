@@ -106,26 +106,21 @@ def test_auth_user_contains_form(authorized_user_client,
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    'name, kwargs, model_form',
+    'name, kwargs',
     [
         (
             'movies:movie_detail',
-            lf('pk_for_movie'),
-            RatingForm
+            lf('pk_for_movie')
             ),
         (
             'movies:review_detail',
-            lf('pk_for_movie_and_review'),
-            CommentForm
+            lf('pk_for_movie_and_review')
             ),
      ]
 )
 def test_not_auth_user_contains_form(client,
                                      name,
-                                     kwargs,
-                                     model_form):
-    # нужно переписать логику вьюсетов, чтобы форма вообще не передавалась в контекст неавторизованного пользователя
+                                     kwargs):
     url = reverse(name, kwargs=kwargs)
     response = client.get(url)
-    assert 'form' in response.context
-    assert isinstance(response.context['form'], model_form)
+    assert 'form' not in response.context

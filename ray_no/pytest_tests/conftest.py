@@ -1,3 +1,4 @@
+import datetime
 import pytest
 
 from django.test.client import Client
@@ -18,10 +19,20 @@ def authorized_user_client(authorized_user):
 
 
 @pytest.fixture
-def movie():
+def director():
     director = Directors.objects.create(first_name='d_first_name',
                                         last_name='d_last_name')
+    return director
+
+
+@pytest.fixture
+def genre():
     genre = Genres.objects.create(genre='test_genre')
+    return genre
+
+
+@pytest.fixture
+def movie(director, genre):
     movie = Movies.objects.create(title='test_title',
                                   release_date='2025-12-12',
                                   director=director)
@@ -44,3 +55,28 @@ def pk_for_movie(movie):
 @pytest.fixture
 def pk_for_movie_and_review(movie, review):
     return {'movie_id': movie.pk, 'review_id': review.pk}
+
+
+@pytest.fixture
+def movie_form_data(director, genre):
+    return {
+        'title': 'test_title2',
+        'release_date': datetime.date(1998, 6, 23),
+        'director': director.id,
+        'genre': [genre.id,]
+    }
+
+
+@pytest.fixture
+def rating_form_data():
+    pass
+
+
+@pytest.fixture
+def review_form_data():
+    pass
+
+
+@pytest.fixture
+def comment_form_data():
+    pass

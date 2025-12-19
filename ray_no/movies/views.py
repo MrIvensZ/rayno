@@ -33,6 +33,7 @@ def movie_detail(request, movie_id):
                               id=movie_id)
     your_score = None
     if request.user.is_authenticated:
+        # если пользователь анонимный, то формы вообще не будет
         try:
             your_score = Rating.objects.get(
                 user=request.user,
@@ -40,21 +41,23 @@ def movie_detail(request, movie_id):
                 ).rate
         except Rating.DoesNotExist:
             pass
-    if request.method == 'POST':
-        form = RatingForm(request.POST)
-        if form.is_valid():
-            Rating.objects.update_or_create(
-                user=request.user,
-                movie=movie,
-                defaults={'rate': form.cleaned_data['rate']}
-            )
-    else:
-        form = RatingForm()
+        if request.method == 'POST':
+            form = RatingForm(request.POST)
+            if form.is_valid():
+                Rating.objects.update_or_create(
+                    user=request.user,
+                    movie=movie,
+                    defaults={'rate': form.cleaned_data['rate']}
+                )
+        else:
+            form = RatingForm()
+        context_update = {'form': form}
     template = 'movies/movie_detail.html'
     context = {'movie': movie,
-               'form': form,
                'your_score': your_score,
                'default_poster': DEFAULT_MOVIE_IMAGE}
+    if request.user.is_authenticated:
+        context.update(context_update)
     return render(request, template, context)
 
 
@@ -89,20 +92,23 @@ def review_list(request, movie_id):
 def review_detail(request, movie_id, review_id):
     review = get_object_or_404(Reviews, pk=review_id)
     comments = review.comments.all().order_by('-time_create')
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = Comments.objects.create(
-                user=request.user,
-                text=form.cleaned_data['text'],
-                review=review
-            )
-            if comment:
-                return redirect(review)
-    else:
-        form = CommentForm()
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = Comments.objects.create(
+                    user=request.user,
+                    text=form.cleaned_data['text'],
+                    review=review
+                )
+                if comment:
+                    return redirect(review)
+        else:
+            form = CommentForm()
+        context_update = {'form': form}
     context = {'review': review,
-               'comments': comments,
-               'form': form}
+               'comments': comments}
+    if request.user.is_authenticated:
+        context.update(context_update)
     template = 'movies/review_detail.html'
     return render(request, template, context)
