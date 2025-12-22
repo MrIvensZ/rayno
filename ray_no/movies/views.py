@@ -44,11 +44,13 @@ def movie_detail(request, movie_id):
         if request.method == 'POST':
             form = RatingForm(request.POST)
             if form.is_valid():
-                Rating.objects.update_or_create(
+                rating = Rating.objects.update_or_create(
                     user=request.user,
                     movie=movie,
                     defaults={'rate': form.cleaned_data['rate']}
                 )
+                if rating:
+                    return redirect(movie.get_absolute_url())
         else:
             form = RatingForm()
         context_update = {'form': form}

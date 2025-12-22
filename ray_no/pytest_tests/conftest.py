@@ -68,15 +68,32 @@ def movie_form_data(director, genre):
 
 
 @pytest.fixture
-def rating_form_data():
-    pass
+def rating_form_data(movie):
+    return {
+        'movie': movie.id,
+        'rate': 5
+    }
 
 
 @pytest.fixture
-def review_form_data():
-    pass
+def wrong_rating_form_data(movie):
+    return {
+        'movie': movie.id,
+        'rate': 11
+    }
 
 
 @pytest.fixture
-def comment_form_data():
-    pass
+def review_form_data(movie):
+    return {
+        'movie': movie.id,
+        'text': 'Test review text'
+    }
+
+
+@pytest.fixture
+def comment_form_data(review):
+    return {
+        'review': review.id,
+        'text': 'Test comment text'
+    }
