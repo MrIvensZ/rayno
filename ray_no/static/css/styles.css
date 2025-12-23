@@ -11,6 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: #2e3b49;
 }
 
 .site-title {
@@ -134,6 +135,10 @@ body {
     border-radius: 8px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 24px;
+}
+
+.top-movie th {
+    color: #5356ff;
 }
 
 form {
