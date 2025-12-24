@@ -94,6 +94,13 @@ def review_list(request, movie_id):
 def review_detail(request, movie_id, review_id):
     review = get_object_or_404(Reviews, pk=review_id)
     comments = review.comments.all().order_by('-time_create')
+    try:
+        score = Rating.objects.get(
+                user=review.user,
+                movie_id=movie_id
+                ).rate
+    except Rating.DoesNotExist:
+        score = None
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = CommentForm(request.POST)
@@ -109,7 +116,8 @@ def review_detail(request, movie_id, review_id):
             form = CommentForm()
         context_update = {'form': form}
     context = {'review': review,
-               'comments': comments}
+               'comments': comments,
+               'score': score}
     if request.user.is_authenticated:
         context.update(context_update)
     template = 'movies/review_detail.html'
