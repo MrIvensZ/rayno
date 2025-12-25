@@ -2,7 +2,6 @@
 {% load static %}
 {% block title %}Movie detail{% endblock %}
 {% block content %}
-    <h2>Movie rating</h2>
     {% if movie %}
         <h2>{{ movie.title }}</h2>
         {% if movie.poster %}
@@ -10,11 +9,13 @@
         {% else %}
             <p><img src="{{ default_poster }}" width="300" height="400"></p>
         {% endif %}
-        <p>Режиссёр: {{ movie.director }}</p>
-        <p>Дата выхода: {{ movie.release_date }}</p>
-        {% for genre in movie.genre.all %}
-            <p>{{ genre.genre }}</p>
-        {% endfor %}
+        <div class="movie-info">
+            <p>Режиссёр: {{ movie.director }}</p>
+            <p>Дата выхода: {{ movie.release_date }}</p>
+            {% for genre in movie.genre.all %}
+                <p>{{ genre.genre }}</p>
+            {% endfor %}
+        </div>
         {% if movie.avg_rating %}
             <h2>Общая оценка: {{movie.avg_rating}}</h2>
         {% endif %}
